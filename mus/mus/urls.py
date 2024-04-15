@@ -19,4 +19,6 @@ import projects.views as project_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/v1/projectslist', project_views.ProjectsAPIView.as_view()),
+    path('api/v1/projectslist/<int:pk>', project_views.ProjectsUpdateAPIView.as_view())
 ]

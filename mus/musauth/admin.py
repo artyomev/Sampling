@@ -1,3 +1,10 @@
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
+from musauth.models import MusUser
 
-# Register your models here.
+
+class MusUserAdmin(UserAdmin):
+    pass
+
+
+admin.site.register(MusUser, MusUserAdmin)
