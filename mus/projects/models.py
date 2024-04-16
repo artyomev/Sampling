@@ -24,11 +24,12 @@ class ProjectTeam(models.Model):
                                 related_name='incharge'
                                 )
     staff = models.ManyToManyField(MusUser,
-                                   related_name='staff'
+                                   related_name='staff_of'
                                    )
     project = models.OneToOneField(Project,
                                     on_delete=models.CASCADE,
-                                    primary_key=True)
+                                    primary_key=True,
+                                   related_name='projects')
 
     def __str__(self):
         return f"{self.project.title} project team"
