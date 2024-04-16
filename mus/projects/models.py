@@ -13,17 +13,24 @@ class Project(models.Model):
 class ProjectTeam(models.Model):
     partner = models.ForeignKey(MusUser,
                                 on_delete=models.CASCADE,
-                                related_name='teams_as_partner'
+                                related_name='partner'
                                 )
     manager = models.ForeignKey(MusUser,
                                 on_delete=models.CASCADE,
-                                related_name='teams_as_manager'
+                                related_name='manager'
                                 )
     incharge = models.ForeignKey(MusUser,
                                 on_delete=models.CASCADE,
-                                related_name='teams_as_incharge'
+                                related_name='incharge'
                                 )
-    staff = models.ManyToManyField(MusUser)
+    staff = models.ManyToManyField(MusUser,
+                                   related_name='staff'
+                                   )
     project = models.OneToOneField(Project,
                                     on_delete=models.CASCADE,
                                     primary_key=True)
+
+    def __str__(self):
+        return f"{self.project.title} project team"
+    class Meta:
+        verbose_name = 'Project team'
