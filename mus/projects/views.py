@@ -5,23 +5,27 @@ from rest_framework.decorators import action
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.response import Response
 
+from musauth.models import MusUser
 from musauth.serializers import MusUserSerializer
 from projects.models import Project
 from projects.serializers import ProjectsSerializer, ProjectTeamSerializer
 
 
 class ProjectViewSet(viewsets.ReadOnlyModelViewSet):
+    """Возвращает список всех созданных проектов"""
     queryset = Project.objects.all()
     serializer_class = ProjectsSerializer
 
 
 class ProjectTeamViewSet(mixins.RetrieveModelMixin,
                            GenericViewSet):
+    """Возвращает список простой команды про проекту"""
     @action(detail=True, methods=['get'])
     def get_team(self, request, pk=None):
         users= Project.objects.get(id=pk).users.all()
         return Response({'project_id': pk, 'team': [{'id': u.id, 'login': u.username} for u in users]})
 
+    """Возвращает детализированный список команды по проекту"""
     @action(detail=True, methods=['get'])
     def get_team_detailed(self, request, pk=None):
         users = Project.objects.get(id=pk).users.all()
@@ -35,3 +39,13 @@ class ProjectTeamViewSet(mixins.RetrieveModelMixin,
         )
 
 
+class UserProjectViewSet(mixins.RetrieveModelMixin,
+                           GenericViewSet):
+    """Возвращает список проектов конкретного пользователя"""
+
+    @action(detail=True, methods=['get'])
+    def get_user_projects(self, request, pk=None):
+        user = MusUser.objects.filter(id=pk).first()
+        return Response({'user_id': pk,
+                         'projects' : [ProjectsSerializer(p).data for p in user.project_set.all()]
+                         })
