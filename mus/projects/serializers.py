@@ -1,23 +1,22 @@
 from rest_framework import serializers
+
+from musauth.models import MusUser
 from musauth.serializers import MusUserSerializer
 
-from projects.models import Project, ProjectTeam
+from projects.models import Project, ProjectTeamRole
 
 
 class ProjectsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
-        fields = '__all__'
+        fields = ['id', 'title']
 
 
 
 class ProjectTeamSerializer(serializers.ModelSerializer):
-    partner = MusUserSerializer()
-    manager = MusUserSerializer()
-    incharge = MusUserSerializer()
-    staff = MusUserSerializer(many = True)
+
 
     class Meta:
-        model = ProjectTeam
-        fields = ['project', 'manager', 'partner', 'incharge', 'staff']
+        model = MusUser
+        fields = '__all__'
 

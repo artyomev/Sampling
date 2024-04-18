@@ -5,33 +5,22 @@ from musauth.models import MusUser
 
 class Project(models.Model):
     title = models.CharField(max_length=300, blank=False)
+    users = models.ManyToManyField(MusUser, through="ProjectTeamRole")
 
     def __str__(self):
         return self.title
 
 
-class ProjectTeam(models.Model):
-    partner = models.ForeignKey(MusUser,
-                                on_delete=models.CASCADE,
-                                related_name='partner'
-                                )
-    manager = models.ForeignKey(MusUser,
-                                on_delete=models.CASCADE,
-                                related_name='manager'
-                                )
-    incharge = models.ForeignKey(MusUser,
-                                on_delete=models.CASCADE,
-                                related_name='incharge'
-                                )
-    staff = models.ManyToManyField(MusUser,
-                                   related_name='staff_of'
-                                   )
-    project = models.OneToOneField(Project,
-                                    on_delete=models.CASCADE,
-                                    primary_key=True,
-                                   related_name='projects')
-
+class ProjectTeamRole(models.Model):
+    user = models.ForeignKey(MusUser, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    role = models.CharField(max_length=250,choices=(('Manager', 'Manager'),
+                                                    ('Partner','Partner'),
+                                                    ('Staff','Staff'),
+                                                    ('Incharge','Incharge'),)
+                            )
     def __str__(self):
-        return f"{self.project.title} project team"
-    class Meta:
-        verbose_name = 'Project team'
+        return f"{self.role} for project: {self.project.title}"
+
+
+
