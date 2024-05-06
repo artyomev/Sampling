@@ -1,9 +1,7 @@
 from rest_framework import serializers
 
 from musauth.models import MusUser
-from musauth.serializers import MusUserSerializer
-
-from projects.models import Project, ProjectTeamRole
+from projects.models import Project
 
 
 class ProjectsSerializer(serializers.ModelSerializer):
@@ -14,8 +12,6 @@ class ProjectsSerializer(serializers.ModelSerializer):
 
 
 class ProjectTeamSerializer(serializers.ModelSerializer):
-
-
     class Meta:
         model = MusUser
         fields = '__all__'

@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     # custom
     'musauth',
     'projects',
+    'importfiles',
 ]
 
 MIDDLEWARE = [
@@ -137,3 +138,6 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'musauth.MusUser'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'

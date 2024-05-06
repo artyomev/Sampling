@@ -4,6 +4,7 @@ from rest_framework.decorators import action
 
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.response import Response
+from rest_framework.permissions import IsAdminUser
 
 from musauth.models import MusUser
 from musauth.serializers import MusUserSerializer
@@ -15,6 +16,7 @@ class ProjectViewSet(viewsets.ReadOnlyModelViewSet):
     """Возвращает список всех созданных проектов"""
     queryset = Project.objects.all()
     serializer_class = ProjectsSerializer
+    permission_classes = (IsAdminUser,)
 
 
 class ProjectTeamViewSet(mixins.RetrieveModelMixin,
