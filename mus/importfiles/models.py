@@ -11,6 +11,5 @@ class InitialUploadedFile(models.Model):
     date_processed = models.DateTimeField(null=True, blank=True)
     status = models.CharField(max_length=150, default='loaded')
 
-
     def __str__(self):
         return self.file_name
