@@ -6,6 +6,7 @@ from rest_framework.viewsets import GenericViewSet
 from rest_framework.response import Response
 from rest_framework.permissions import IsAdminUser
 
+from importfiles.serializers import InitialFileSerializer
 from musauth.models import MusUser
 from musauth.serializers import MusUserSerializer
 from projects.models import Project
@@ -50,4 +51,13 @@ class UserProjectViewSet(mixins.RetrieveModelMixin,
         user = MusUser.objects.filter(id=pk).first()
         return Response({'user_id': pk,
                          'projects' : [ProjectsSerializer(p).data for p in user.project_set.all()]
+                         })
+
+class ProjectFilesViewSet(mixins.RetrieveModelMixin,
+                           GenericViewSet):
+    @action(detail=True, methods=['get'])
+    def get_project_files(self, request, pk=None):
+        project = Project.objects.filter(id=pk).first()
+        return Response({'project_id': pk,
+                         'files': [InitialFileSerializer(p).data for p in project.initialuploadedfile_set.all()]
                          })
