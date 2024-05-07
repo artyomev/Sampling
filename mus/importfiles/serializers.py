@@ -10,4 +10,5 @@ class InitialFileSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def validate_initial_file(self, data):
-        validate_extension(data.file_name)
+        validate_extension(data)
+        return data
