@@ -6,7 +6,7 @@ def get_extension(file_name: str) -> str:
 def parse_txt_file(file):
     with open(file) as f:
         first_line = f.readline()
-    if len(first_line.split('.')):
+    if len(first_line.split('.'))>2:
         print('Format error')
 
 

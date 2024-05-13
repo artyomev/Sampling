@@ -7,6 +7,7 @@ from projects.models import Project
 class InitialUploadedFile(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     initial_file = models.FileField()
+    txt_column_delimiter = models.CharField(max_length=5, default="")
     file_name = models.CharField(max_length=200, default="")
     date_uploaded = models.DateTimeField(auto_now_add=True)
     by_user = models.ForeignKey(MusUser, on_delete=models.DO_NOTHING)
