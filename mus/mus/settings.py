@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'musauth',
     'projects',
     'importfiles',
+    'analysis',
 ]
 
 MIDDLEWARE = [
