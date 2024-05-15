@@ -35,11 +35,13 @@ class Parser:
     
     def _parse_excel_file_columns(self) -> (bool, str):
         try:
-            with load_workbook(self.file.path) as wb:
-                sheet = wb.worksheets[0]
-                if sheet.max_column > 2:
-                    return False,'There should be only 2 columns in a file!'
-                return True, 'Column format ok'
+            wb =load_workbook(self.file.path)
+            sheet = wb.worksheets[0]
+            if sheet.max_column > 2:
+                wb.close()
+                return False,'There should be only 2 columns in a file!'
+            wb.close()
+            return True, 'Column format ok'
         except:
             return False, 'Could not open the file! It may be corrupted!'
 
