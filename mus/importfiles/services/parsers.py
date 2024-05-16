@@ -1,28 +1,15 @@
 from importfiles.models import InitialUploadedFile, FileMetaData
+from importfiles.services.BaseParser import BaseParser
 from importfiles.storage import uploads_storage
 from openpyxl import load_workbook
 
-def get_extension(file_name: str) -> str:
-    return file_name.split('.')[-1]
 
 
-class Parser:
-    excel_extensions = ['xslx', 'xlsb', 'xls', 'xlsm']
-    text_extensions = ['txt', 'csv']
 
-    def __init__(self, file, file_id:int):
-        self.file = file
-        self.file_id = file_id
-    @property
-    def ext(self):
-        return get_extension(self.file.name)
+class Parser(BaseParser):
 
     def _parse_txt_file_columns(self) -> (bool,str):
-        if self.ext == 'txt':
-            initial_file = InitialUploadedFile.objects.filter(id=self.file_id).first()
-            col_del = initial_file.txt_column_delimiter
-        else:
-            col_del = ","
+        col_del = self._get_txt_column_delimeter()
         try:
             with uploads_storage.open(self.file.name, 'r') as f:
                 first_line = f.readline()
@@ -35,7 +22,7 @@ class Parser:
     
     def _parse_excel_file_columns(self) -> (bool, str):
         try:
-            wb =load_workbook(self.file.path)
+            wb = load_workbook(self.file.path)
             sheet = wb.worksheets[0]
             if sheet.max_column > 2:
                 wb.close()

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from importfiles.services.parsers import get_extension
+from importfiles.services.BaseParser import get_extension
 
 
 def validate_extension(data):

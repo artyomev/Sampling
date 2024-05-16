@@ -21,7 +21,7 @@ class InitialUploadedFile(models.Model):
 
 
 class FileMetaData(models.Model):
-    file = models.OneToOneField(InitialUploadedFile, on_delete=models.CASCADE)
+    file = models.OneToOneField(InitialUploadedFile, on_delete=models.CASCADE, primary_key=True)
     sum = models.FloatField()
     elements_number = models.IntegerField()
 
