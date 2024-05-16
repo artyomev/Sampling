@@ -16,11 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from projects.routers import router as project_router
-from importfiles.views import FileUploadAPIView
+from importfiles.views import FileUploadAPIView, SingleDownloadFile
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/', include(project_router.urls)),
-    path('api/v1/upload/', FileUploadAPIView.as_view(), name = 'upload'),
-
+    path('api/v1/upload/', FileUploadAPIView.as_view()),
+    path('api/v1/download/<int:pk>', SingleDownloadFile.as_view())
 ]
