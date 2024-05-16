@@ -17,10 +17,12 @@ from django.contrib import admin
 from django.urls import path, include
 from projects.routers import router as project_router
 from importfiles.views import FileUploadAPIView, SingleDownloadFile
+from musauth.routers import router as user_router
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/', include(project_router.urls)),
+    path('api/v1/', include(user_router.urls)),
     path('api/v1/upload/', FileUploadAPIView.as_view()),
     path('api/v1/download/<int:pk>', SingleDownloadFile.as_view())
 ]
