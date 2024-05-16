@@ -22,4 +22,22 @@ def validate_delimiter_presence(data):
     except Exception as e:
         raise serializers.ValidationError(e)
 
+def validate_decimal_separator_presence(data):
+    try:
+        if get_extension(data['initial_file'].name) in ('txt', 'csv'):
+            if data.get('decimal_separator', "") == "":
+                raise serializers.ValidationError('You have to determine decimal separator for text/csv file!')
+    except Exception as e:
+        raise serializers.ValidationError(e)
+
+def validate_thousand_separator_presence(data):
+    try:
+        if get_extension(data['initial_file'].name) in ('txt', 'csv'):
+            if data.get('thousand_separator', "") == "":
+                raise serializers.ValidationError('You have to determine thousand separator for text/csv file!')
+    except Exception as e:
+        raise serializers.ValidationError(e)
+
+
+
 

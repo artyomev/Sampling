@@ -11,9 +11,10 @@ class InitialUploadedFile(models.Model):
     file_name = models.CharField(max_length=200, default="")
     date_uploaded = models.DateTimeField(auto_now_add=True)
     by_user = models.ForeignKey(MusUser, on_delete=models.DO_NOTHING)
-    date_processed = models.DateTimeField(null=True, blank=True)
     status = models.CharField(max_length=150, default='loaded')
     validation_passed = models.BooleanField(default=False)
+    thousand_separator = models.CharField(max_length=10, default='')
+    decimal_separator = models.CharField(max_length=10, default='')
 
     def __str__(self):
         return self.file_name
