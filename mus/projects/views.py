@@ -1,4 +1,4 @@
-
+from django.views.generic import DetailView, ListView
 from rest_framework import viewsets, mixins
 from rest_framework.decorators import action
 
@@ -61,3 +61,10 @@ class ProjectFilesViewSet(mixins.RetrieveModelMixin,
         return Response({'project_id': pk,
                          'files': [InitialFileSerializer(p).data for p in project.initialuploadedfile_set.all()]
                          })
+
+class ProjectDetail(DetailView):
+    model = Project
+
+
+class ProjectList(ListView):
+    model = Project

@@ -1,0 +1,19 @@
+{% extends 'projects/root.html' %}
+
+{% block content %}
+    <h3>Projects({{ object_list|length }})</h3>
+    <ul>
+        {% for item in object_list %}
+            <li>
+                {{ item.title}}
+                (
+                {% for user in item.users.all %}
+                    {{ user}},
+                {% endfor %}
+                )
+
+            </li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

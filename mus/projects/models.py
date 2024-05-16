@@ -1,5 +1,6 @@
 from django.db import models
 
+
 from musauth.models import MusUser
 
 
@@ -21,6 +22,5 @@ class ProjectTeamRole(models.Model):
                             )
     def __str__(self):
         return f"{self.role} for project: {self.project.title}"
-
 
 

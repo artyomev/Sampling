@@ -18,11 +18,16 @@ from django.urls import path, include
 from projects.routers import router as project_router
 from importfiles.views import FileUploadAPIView, SingleDownloadFile
 from musauth.routers import router as user_router
+# for homework 8
+from projects.views import ProjectDetail, ProjectList
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/', include(project_router.urls)),
     path('api/v1/', include(user_router.urls)),
     path('api/v1/upload/', FileUploadAPIView.as_view()),
-    path('api/v1/download/<int:pk>', SingleDownloadFile.as_view())
+    path('api/v1/download/<int:pk>', SingleDownloadFile.as_view()),
+    # for homework 8
+    path('api/v1/project_detail/<int:pk>', ProjectDetail.as_view()),
+    path('api/v1/project_list', ProjectList.as_view()),
 ]

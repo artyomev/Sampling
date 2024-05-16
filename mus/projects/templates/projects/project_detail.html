@@ -1,0 +1,15 @@
+{% extends 'projects/root.html' %}
+
+{% block title %}
+  {{ block.super }}
+{% endblock %}
+
+{% block content %}
+<h1>Project name: {{ project.title }}</h1>
+<h3>Project Team:</h3>
+<ul>
+    {% for user in project.users.all %}
+        <li>{{ user.username }}</li>
+    {% endfor %}
+</ul>
+{% endblock %}
