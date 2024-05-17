@@ -44,16 +44,3 @@ class FileProcessor(BaseParser):
         return validation_passed, status_result, sum_of, num
 
 
-# def post_save_process_file(file, id:int):
-#     processor = FileProcessor(file, id)
-#     file_obj = InitialUploadedFile.objects.filter(pk=id)
-#
-#     update_file_meta(file_obj, 'processing_file', False)
-#     validation_passed, status_result, sum_of, num = processor.process_file()
-#
-#     meta = FileMetaData(file = file_obj.first(), sum = sum_of, elements_number = num)
-#     meta.save()
-#
-#     update_file_meta(file_obj, status_result, validation_passed)
-#
-#

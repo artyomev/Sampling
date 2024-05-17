@@ -9,7 +9,7 @@ class Analysis(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     files = models.ManyToManyField(InitialUploadedFile)
     analysis_name = models.CharField(max_length=200)
-    sampled_units_count = models.IntegerField()
+    sampled_units_count = models.IntegerField(default=0)
     sample_name = models.TextField()
 
     def __str__(self):
@@ -20,5 +20,6 @@ class Analysis(models.Model):
 class AnalysisParameters(models.Model):
     analysis = models.OneToOneField(Analysis, on_delete=models.CASCADE)
     spm = models.FloatField()
-    random_seed = models.IntegerField()
+    generate_random_seed = models.BooleanField(default=True)
+    random_seed = models.IntegerField(default=0)
 
