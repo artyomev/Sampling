@@ -40,14 +40,6 @@ class Parser(BaseParser):
         return validation_passed,status_result
 
 
-def post_save_parse_file(file, id:int):
-    parser = Parser(file, id)
-    file_obj = InitialUploadedFile.objects.filter(pk=id)
-
-    update_file_meta(file_obj, 'checking_columns_format', False)
-    validation_passed, status_result = parser.parse_file()
-    update_file_meta(file_obj, status_result, validation_passed)
-
 
 def update_file_meta(obj, status, validation_passed):
     obj.update(
