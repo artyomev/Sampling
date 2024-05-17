@@ -142,3 +142,7 @@ AUTH_USER_MODEL = 'musauth.MusUser'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+# custom settings
+EXCEL_EXTENSIONS = ['xslx', 'xlsb', 'xls', 'xlsm']
+TEXT_EXTENSIONS = ['txt', 'csv']

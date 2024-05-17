@@ -1,10 +1,10 @@
 from importfiles.models import InitialUploadedFile
-
+from mus.settings import EXCEL_EXTENSIONS, TEXT_EXTENSIONS
 
 
 class BaseParser:
-    excel_extensions = ['xslx', 'xlsb', 'xls', 'xlsm']
-    text_extensions = ['txt', 'csv']
+    excel_extensions = EXCEL_EXTENSIONS
+    text_extensions = TEXT_EXTENSIONS
 
     def __init__(self, file, file_id: int):
         self.file = file
