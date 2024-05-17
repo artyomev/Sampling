@@ -15,6 +15,8 @@ class Analysis(models.Model):
     def __str__(self):
         return self.analysis_name
 
+
+
 class AnalysisParameters(models.Model):
     analysis = models.OneToOneField(Analysis, on_delete=models.CASCADE)
     spm = models.FloatField()
