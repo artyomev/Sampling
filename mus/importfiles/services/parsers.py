@@ -1,7 +1,10 @@
-from importfiles.models import InitialUploadedFile, FileMetaData
+from contextlib import contextmanager
+
+import openpyxl
+import io
 from importfiles.services.BaseParser import BaseParser
 from importfiles.storage import uploads_storage
-from openpyxl import load_workbook
+
 
 
 
@@ -22,15 +25,14 @@ class Parser(BaseParser):
     
     def _parse_excel_file_columns(self) -> (bool, str):
         try:
-            wb = load_workbook(self.file.path)
-            sheet = wb.worksheets[0]
-            if sheet.max_column > 2:
-                wb.close()
-                return False,'There should be only 2 columns in a file!'
-            wb.close()
+            with get_excel_workbook(self.file.path) as wb:
+                sheet = wb.worksheets[0]
+                if sheet.max_column > 2:
+                    wb.close()
+                    return False,'There should be only 2 columns in a file!'
             return True, 'Column format ok'
         except:
-            return False, 'Could not open the file! It may be corrupted!'
+            return False, 'Something went wrong'
 
     def parse_file(self)-> (bool, str):
         if self.ext in self.text_extensions:
@@ -46,3 +48,24 @@ def update_file_meta(obj, status, validation_passed):
         status= status,
         validation_passed = validation_passed
     )
+
+@contextmanager
+def get_excel_workbook(path: str) -> openpyxl.workbook.workbook.Workbook:
+    """Читает и возвращает файл экселя.
+
+    Args:
+        path (str): путь к файлу
+
+    Yields:
+        openpyxl.workbook.workbook.Workbook: excel workbook
+    """
+    with open(path, "rb") as f:
+        in_mem_file = io.BytesIO(f.read())
+
+    wb = openpyxl.load_workbook(in_mem_file, data_only=True, read_only=True)
+    try:
+        yield wb
+    finally:
+        wb.close()
+        del wb
+        del in_mem_file

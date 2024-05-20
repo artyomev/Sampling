@@ -2,7 +2,7 @@ from openpyxl.reader.excel import load_workbook
 
 from importfiles.models import InitialUploadedFile, FileMetaData
 from importfiles.services.BaseParser import BaseParser
-from importfiles.services.parsers import update_file_meta
+from importfiles.services.parsers import update_file_meta, get_excel_workbook
 from importfiles.storage import uploads_storage
 
 
@@ -27,14 +27,13 @@ class FileProcessor(BaseParser):
         sum_of =0
         num=0
         try:
-            wb = load_workbook(self.file.path)
-            sheet = wb.worksheets[0]
-            num = sheet.max_row-1
-            sum_of = sum(cl.value for cl in sheet['B'] if cl.row !=1)
-            wb.close()
-            return [True, 'Excel File has been processed!', sum_of, num]
+            with get_excel_workbook(self.file.path) as wb:
+                sheet = wb.worksheets[0]
+                num = sheet.max_row-1
+                sum_of = sum(cl.value for cl in sheet['B'] if cl.row !=1)
+                return [True, 'Excel File has been processed!', sum_of, num]
         except:
-            return [False, 'Could not open the file! It may be corrupted!', sum_of, num]
+            return [False, 'Something went wrong!', sum_of, num]
 
     def process_file(self) -> (bool,str, float, int):
         if self.ext in self.text_extensions:
