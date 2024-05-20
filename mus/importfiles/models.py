@@ -3,10 +3,13 @@ from django.db import models
 from musauth.models import MusUser
 from projects.models import Project
 
+def project_files_folder(instance, filename):
+    return "{0}_files/".format(instance.project.title)
+
 
 class InitialUploadedFile(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
-    initial_file = models.FileField()
+    initial_file = models.FileField(upload_to=project_files_folder)
     txt_column_delimiter = models.CharField(max_length=5, default="")
     file_name = models.CharField(max_length=200, default="")
     date_uploaded = models.DateTimeField(auto_now_add=True)
@@ -24,6 +27,7 @@ class FileMetaData(models.Model):
     file = models.OneToOneField(InitialUploadedFile, on_delete=models.CASCADE, primary_key=True)
     sum = models.FloatField()
     elements_number = models.IntegerField()
+
 
 
 
