@@ -1,0 +1,58 @@
+version: '3'
+
+services:
+  django:
+    build:
+      dockerfile: ./docker/backend/Dockerfile
+      context: .
+    container_name: django
+    command: python manage.py runserver
+    ports:
+      - 8000:8000
+    depends_on:
+      pg:
+        condition: service_healthy
+
+  worker:
+        restart: unless-stopped
+        build:
+            context: .
+            dockerfile: ./docker/backend/Dockerfile
+        entrypoint: /app/docker/backend/worker-entrypoint.sh
+
+        environment:
+            DEBUG: "True"
+            CELERY_BROKER_URL: "redis://redis:6379/0"
+            CELERY_RESULT_BACKEND: "redis://redis:6379/0"
+            DJANGO_DB: postgresql
+            POSTGRES_HOST: db
+            POSTGRES_NAME: mus
+            POSTGRES_USER: root
+            POSTGRES_PASSWORD: admin
+            POSTGRES_PORT: 5432
+        depends_on:
+            - server
+            - redis
+
+  redis:
+    restart: unless-stopped
+    image: redis:7.0.5-alpine
+    expose:
+      - 6379
+
+  pg:
+    image: postgres
+    environment:
+      POSTGRES_DB: mus
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: admin
+      PGDATA: /var/lib/postgresql/data
+    #    volumes:
+    #      - db-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d mus -U root" ]
+      interval: 5s
+      timeout: 3s
+      retries: 5
