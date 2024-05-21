@@ -22,7 +22,7 @@ class ProjectViewSet(viewsets.ReadOnlyModelViewSet):
 
 class ProjectTeamViewSet(mixins.RetrieveModelMixin,
                            GenericViewSet):
-    """Возвращает список простой команды про проекту"""
+    """Возвращает простой список команды про проекту"""
     @action(detail=True, methods=['get'])
     def get_team(self, request, pk=None):
         users= Project.objects.get(id=pk).users.all()

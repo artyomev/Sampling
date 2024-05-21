@@ -36,6 +36,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     # 3-rd party
     'rest_framework',
+    'drf_yasg',
     # contribs
     'django.contrib.admin',
     'django.contrib.auth',

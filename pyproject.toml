@@ -16,6 +16,7 @@ openpyxl = "^3.1.2"
 numpy = "^1.26.4"
 celery = "^5.4.0"
 redis = "^5.0.4"
+drf-yasg = "^1.21.7"
 
 
 [build-system]
