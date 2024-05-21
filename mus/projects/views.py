@@ -22,6 +22,8 @@ class ProjectViewSet(viewsets.ReadOnlyModelViewSet):
 
 class ProjectTeamViewSet(mixins.RetrieveModelMixin,
                            GenericViewSet):
+    queryset = Project.objects.all()
+    serializer_class = Project
     """Возвращает простой список команды про проекту"""
     @action(detail=True, methods=['get'])
     def get_team(self, request, pk=None):

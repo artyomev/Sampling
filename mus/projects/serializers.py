@@ -12,6 +12,7 @@ class ProjectsSerializer(serializers.ModelSerializer):
 
 
 class ProjectTeamSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = MusUser
         fields = '__all__'
