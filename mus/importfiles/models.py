@@ -4,7 +4,7 @@ from musauth.models import MusUser
 from projects.models import Project
 
 def project_files_folder(instance, filename):
-    return "{0}_files/".format(instance.project.title)
+    return "{0}_files/{1}".format(instance.project.title, filename)
 
 
 class InitialUploadedFile(models.Model):

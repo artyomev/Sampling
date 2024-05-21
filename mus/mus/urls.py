@@ -15,6 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+
+from analysis.views import ExecuteAnalysis
 from projects.routers import router as project_router
 from importfiles.views import FileUploadAPIView, SingleDownloadFile
 from musauth.routers import router as user_router
@@ -29,6 +31,7 @@ urlpatterns = [
     path('api/v1/', include(analysis_router.urls)),
     path('api/v1/upload/', FileUploadAPIView.as_view()),
     path('api/v1/download/<int:pk>/', SingleDownloadFile.as_view()),
+    path('api/v1/execute/<int:pk>/',  ExecuteAnalysis.as_view()),
     # for homework 8
     path('api/v1/project_detail/<int:pk>/', ProjectDetail.as_view()),
     path('api/v1/project_list/', ProjectList.as_view()),

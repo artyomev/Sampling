@@ -1,7 +1,7 @@
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from analysis.models import AnalysisParameters
-from analysis.utils import gen_random_seed
+from analysis.services.utils import gen_random_seed
 
 
 @receiver(post_save, sender=AnalysisParameters)

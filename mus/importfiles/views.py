@@ -36,11 +36,9 @@ class SingleDownloadFile(GenericAPIView):
 
     def get(self, request, *args, **kwargs):
         try:
-            print(kwargs)
             pk = kwargs.get('pk', 0)
             obj = InitialUploadedFile.objects.get(id=pk)
             filename = obj.initial_file.path
-            print(filename)
             response = FileResponse(open(filename, 'rb'))
             return response
         except:

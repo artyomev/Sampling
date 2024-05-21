@@ -59,7 +59,7 @@ def get_excel_workbook(path: str) -> openpyxl.workbook.workbook.Workbook:
     Yields:
         openpyxl.workbook.workbook.Workbook: excel workbook
     """
-    with open(path, "rb") as f:
+    with uploads_storage.open(path, "rb") as f:
         in_mem_file = io.BytesIO(f.read())
 
     wb = openpyxl.load_workbook(in_mem_file, data_only=True, read_only=True)

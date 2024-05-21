@@ -2,30 +2,30 @@ import csv
 import os
 
 from analysis.services.read_data import read_input_excel, read_input_csv, read_input_txt
+from importfiles.models import InitialUploadedFile
+from importfiles.storage import uploads_storage
 
 
 def process_files(
-    paths: list[str],
+    files: list[InitialUploadedFile],
     spm: float,
-    analysis_name: str,
-    save_folder: str,
-    col_del=""
-) :
+    new_sample_path_save: str
+) -> str:
     """Основная функция для запуска сэмплирования"""
 
     # чтение популяций
     ids, sums = [], []
-    for path in paths:
-        if path.endswith(".xlsx"):
-            ids_pop, sums_pop = read_input_excel(path)
-        elif path.endswith('csv'):
-            ids_pop, sums_pop = read_input_csv(path)
+    for file in files:
+        file_name = file.initial_file.name
+        if file_name.endswith(".xlsx"):
+            ids_pop, sums_pop = read_input_excel(file_name)
+        elif file_name.endswith('csv'):
+            ids_pop, sums_pop = read_input_csv(file_name)
         else:
-            ids_pop, sums_pop = read_input_txt(path, col_del)
+            col_del = file.initial_file.txt_column_delimiter
+            ids_pop, sums_pop = read_input_txt(file_name, col_del)
         ids.append(ids_pop)
         sums.append(sums_pop)
-
-    new_sample_path_save = os.path.join(save_folder, analysis_name)
 
     write_sample(
         new_sample_path_save,
@@ -33,6 +33,8 @@ def process_files(
         sums,
         spm
     )
+
+    return new_sample_path_save
 
 
 
@@ -56,13 +58,13 @@ def write_sample(
         row_sums (list[float]): список значений элементов
         spm: уровень существенности
     """
-    with open(path, "w", encoding="utf-8", newline="") as f:
+    with open(path, "w") as f:
         csvwriter = csv.writer(f, delimiter=",", quotechar='"')
         csvwriter.writerow(["mus_is", "row_sum"])
         for row_id, row_sum in zip(
-            row_ids, row_sums
+            *row_ids, *row_sums
         ):
             if row_sum >= spm:
                 csvwriter.writerow(
                     [str(row_id), row_sum]
-                )
+                    )
