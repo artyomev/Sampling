@@ -20,3 +20,15 @@ class InitialFileSerializer(serializers.ModelSerializer):
         validate_decimal_separator_presence(data)
         return data
 
+class SingleDownloadSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = InitialUploadedFile
+        fields = ('id',)
+
+class InitialFileUploadSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = InitialUploadedFile
+        fields = ('initial_file', 'txt_column_delimiter', 'file_name',
+                  'thousand_separator', 'decimal_separator',
+                  'project', 'by_user')

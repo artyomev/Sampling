@@ -1,6 +1,8 @@
 from django.views.generic import DetailView, ListView
+
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework import viewsets, mixins
-from rest_framework.decorators import action
+from rest_framework.decorators import action, api_view
 
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.response import Response
@@ -11,28 +13,34 @@ from musauth.models import MusUser
 from musauth.serializers import MusUserSerializer
 from projects.models import Project
 from projects.serializers import ProjectsSerializer, ProjectTeamSerializer
+from projects.uils import team_response_schema_dict, team_detailed_response_schema_dict, \
+    userprojects_response_schema_dict
 
 
 class ProjectViewSet(viewsets.ReadOnlyModelViewSet):
-    """Возвращает список всех созданных проектов"""
     queryset = Project.objects.all()
     serializer_class = ProjectsSerializer
     permission_classes = (IsAdminUser,)
 
 
-class ProjectTeamViewSet(mixins.RetrieveModelMixin,
-                           GenericViewSet):
-    queryset = Project.objects.all()
-    serializer_class = Project
-    """Возвращает простой список команды про проекту"""
+class ProjectTeamViewSet(GenericViewSet):
+    # retriver override
+    serializer_class = ProjectsSerializer
+
+    def get_queryset(self):
+        pass
+
+    @swagger_auto_schema(method='get', responses=team_response_schema_dict)
     @action(detail=True, methods=['get'])
     def get_team(self, request, pk=None):
+        """Возвращает простой список команды про проекту"""
         users= Project.objects.get(id=pk).users.all()
         return Response({'project_id': pk, 'team': [{'id': u.id, 'login': u.username} for u in users]})
 
-    """Возвращает детализированный список команды по проекту"""
+    @swagger_auto_schema(method='get', responses=team_detailed_response_schema_dict)
     @action(detail=True, methods=['get'])
     def get_team_detailed(self, request, pk=None):
+        """Возвращает детализированный список команды по проекту"""
         users = Project.objects.get(id=pk).users.all()
         return Response(
             {'project_id': pk,
@@ -44,10 +52,14 @@ class ProjectTeamViewSet(mixins.RetrieveModelMixin,
         )
 
 
-class UserProjectViewSet(mixins.RetrieveModelMixin,
-                           GenericViewSet):
+class UserProjectViewSet(GenericViewSet):
+    serializer_class = ProjectsSerializer
     """Возвращает список проектов конкретного пользователя"""
 
+    def get_queryset(self):
+        pass
+
+    @swagger_auto_schema(responses=userprojects_response_schema_dict)
     @action(detail=True, methods=['get'])
     def get_user_projects(self, request, pk=None):
         user = MusUser.objects.filter(id=pk).first()
@@ -57,6 +69,10 @@ class UserProjectViewSet(mixins.RetrieveModelMixin,
 
 class ProjectFilesViewSet(mixins.RetrieveModelMixin,
                            GenericViewSet):
+    serializer_class = InitialFileSerializer
+
+    def get_queryset(self):
+        pass
     @action(detail=True, methods=['get'])
     def get_project_files(self, request, pk=None):
         project = Project.objects.filter(id=pk).first()

@@ -23,3 +23,9 @@ class AnalysisParametersSerializer(serializers.ModelSerializer):
         def validate(self, data):
             validate_randomseed(data)
             return data
+
+class ExecuteAnalysisSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Analysis
+        fields = ('id',)

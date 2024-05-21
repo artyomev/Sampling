@@ -151,3 +151,7 @@ CELERY_RESULT_BACKEND = 'rpc://'
 # custom settings
 EXCEL_EXTENSIONS = ['xslx', 'xlsb', 'xls', 'xlsm']
 TEXT_EXTENSIONS = ['txt', 'csv']
+
+SWAGGER_SETTINGS = {
+    "DEFAULT_MODEL_RENDERING": "example"
+}
