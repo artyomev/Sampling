@@ -28,8 +28,7 @@ SECRET_KEY = os.environ['SECRET_KEY']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0']
 
 # Application definition
 
@@ -44,7 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
+    'django.contrib.postgres',
     # custom
     'musauth',
     'projects',
@@ -92,7 +91,7 @@ DATABASES = {
         'NAME': 'mus',
         'USER': 'postgres',
         'PASSWORD': 'admin',
-        'HOST': '127.0.0.1',
+        'HOST': 'pg',
         'PORT': '5432',
     }
 }
@@ -145,8 +144,8 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 # celery
-CELERY_BROKER_URL = 'redis://localhost:6379'
-CELERY_RESULT_BACKEND = 'rpc://'
+CELERY_BROKER_URL = 'redis://redis:6379'
+CELERY_RESULT_BACKEND = 'redis://redis:6379'
 
 # custom settings
 EXCEL_EXTENSIONS = ['xslx', 'xlsb', 'xls', 'xlsm']
@@ -155,3 +154,8 @@ TEXT_EXTENSIONS = ['txt', 'csv']
 SWAGGER_SETTINGS = {
     "DEFAULT_MODEL_RENDERING": "example"
 }
+
+ADMINS = (
+
+    ('root', 'root@example.com'),
+)
