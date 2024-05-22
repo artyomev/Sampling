@@ -4,12 +4,14 @@ services:
   django:
     build:
       dockerfile: ./docker//Dockerfile
-      context: .
+      context: ./
     container_name: django
 #    command: python manage.py runserver 0.0.0.0:5000
     entrypoint: /app/docker/runserver.sh
     ports:
       - "5000:5000"
+    volumes:
+      - /app/media
     depends_on:
       pg:
         condition: service_healthy
