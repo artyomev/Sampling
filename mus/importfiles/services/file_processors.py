@@ -32,8 +32,8 @@ class FileProcessor(BaseParser):
                 num = sheet.max_row-1
                 sum_of = sum(cl.value for cl in sheet['B'] if cl.row !=1)
                 return [True, 'Excel File has been processed!', sum_of, num]
-        except:
-            return [False, 'Something went wrong!', sum_of, num]
+        except Exception as e:
+            return [False, repr(e) + self.file.path, sum_of, num]
 
     def process_file(self) -> (bool,str, float, int):
         if self.ext in self.text_extensions:

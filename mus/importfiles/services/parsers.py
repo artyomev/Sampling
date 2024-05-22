@@ -20,8 +20,8 @@ class Parser(BaseParser):
             if len(first_line.split(col_del)) > 2:
                 return False,'There should be only 2 columns in a file!'
             return True, 'Column format ok'
-        except:
-            return False, 'Could not open the file! It may be corrupted!'
+        except Exception as e:
+            return False, repr(e)
     
     def _parse_excel_file_columns(self) -> (bool, str):
         try:
@@ -31,8 +31,8 @@ class Parser(BaseParser):
                     wb.close()
                     return False,'There should be only 2 columns in a file!'
             return True, 'Column format ok'
-        except:
-            return False, 'Something went wrong'
+        except Exception as e:
+            return False, repr(e) + " | " + self.file.path
 
     def parse_file(self)-> (bool, str):
         if self.ext in self.text_extensions:
