@@ -1,1 +1,0 @@
-celery -A mus worker -l INFO
