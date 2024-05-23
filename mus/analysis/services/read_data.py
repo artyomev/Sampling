@@ -62,10 +62,11 @@ def read_input_csv(path: str) -> tuple[np.array, np.array]:
             для элементов популяции
     """
     rows = []
-    with uploads_storage.open(path, 'r', encoding="utf-8") as f:
+    with uploads_storage.open(path, 'r') as f:
         csvreader = csv.reader(f, delimiter=",", quotechar='"')
         for line in islice(csvreader, 1, None):
-            rows.append([line[0].strip(), float(line[1].strip())])
+            if line != []:
+                rows.append([line[0].strip(), float(line[1].strip())])
 
     rows = sorted(rows, key=lambda x: (-x[1], x[0]))
     ids = []
@@ -98,7 +99,7 @@ def read_input_txt(path:str, col_del: str) -> tuple[np.array, np.array]:
         for line in f.readlines()[1:]:
             line = line.rstrip('\n').rstrip('\r')
             if line != '':
-                rows.append((str(line[0]), float(line[1])))
+                rows.append((str(line.split(col_del)[0]), float(line.split(col_del)[1])))
 
     rows = sorted(rows, key=lambda x: (-x[1], x[0]))
     ids = []

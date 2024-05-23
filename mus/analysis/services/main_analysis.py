@@ -23,7 +23,7 @@ def process_files(
         elif file_name.endswith('csv'):
             ids_pop, sums_pop = read_input_csv(file_name)
         else:
-            col_del = file.initial_file.txt_column_delimiter
+            col_del = file.txt_column_delimiter
             ids_pop, sums_pop = read_input_txt(file_name, col_del)
         ids.extend(ids_pop.tolist())
         sums.extend(sums_pop.tolist())
