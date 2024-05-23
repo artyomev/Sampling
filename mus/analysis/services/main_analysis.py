@@ -1,6 +1,6 @@
 import csv
 import pathlib
-import sys
+
 
 from analysis.services.read_data import read_input_excel, read_input_csv, read_input_txt
 from importfiles.models import InitialUploadedFile
@@ -49,7 +49,7 @@ def write_sample(
     """Записывает выборку в csv-формате в файл path.
 
     Выборка - csv-файл с следующими колонками:
-    pop_ids,row_ids,row_sums,is_IS_list,mus_rec_hit_list
+    mus_id,row_sum
 
     Первая строка - название колонок, остальные - элементы выборки.
 
