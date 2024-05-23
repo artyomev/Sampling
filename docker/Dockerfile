@@ -13,4 +13,6 @@ RUN poetry install
 ADD ../mus /app
 ADD ../docker /app/docker
 
+RUN mkdir -p /app/media
 RUN  chmod a+x ./docker/runserver.sh
+

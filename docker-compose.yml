@@ -4,14 +4,14 @@ services:
   django:
     build:
       dockerfile: ./docker//Dockerfile
-      context: ./
+      context: .
     container_name: django
 #    command: python manage.py runserver 0.0.0.0:5000
     entrypoint: /app/docker/runserver.sh
     ports:
       - "5000:5000"
     volumes:
-      - /app/media
+      - media_volume:/app/media
     depends_on:
       pg:
         condition: service_healthy
@@ -20,7 +20,9 @@ services:
     build:
       context: .
       dockerfile: ./docker//Dockerfile
-    command: "celery -A mus worker -l INFO"
+    command: "celery -A mus --workdir=. worker -l INFO"
+    volumes:
+      - media_volume:/app/media
     depends_on:
       - django
       - redis
@@ -48,3 +50,6 @@ services:
       interval: 5s
       timeout: 3s
       retries: 5
+
+volumes:
+  media_volume:
