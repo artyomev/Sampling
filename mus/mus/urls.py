@@ -1,4 +1,4 @@
-
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
@@ -8,6 +8,7 @@ from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
 from analysis.views import ExecuteAnalysis
+from django.conf import settings
 from projects.routers import router as project_router
 from importfiles.views import FileUploadAPIView, SingleDownloadFile
 from musauth.routers import router as user_router
@@ -43,3 +44,6 @@ urlpatterns = [
     path('api/v1/project_detail/<int:pk>/', ProjectDetail.as_view()),
     path('api/v1/project_list/', ProjectList.as_view()),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

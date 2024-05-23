@@ -1,9 +1,10 @@
 import csv
-import os
+import pathlib
+import sys
 
 from analysis.services.read_data import read_input_excel, read_input_csv, read_input_txt
 from importfiles.models import InitialUploadedFile
-from importfiles.storage import uploads_storage
+
 
 
 def process_files(
@@ -24,8 +25,8 @@ def process_files(
         else:
             col_del = file.initial_file.txt_column_delimiter
             ids_pop, sums_pop = read_input_txt(file_name, col_del)
-        ids.append(ids_pop)
-        sums.append(sums_pop)
+        ids.extend(ids_pop.tolist())
+        sums.extend(sums_pop.tolist())
 
     write_sample(
         new_sample_path_save,
@@ -58,11 +59,14 @@ def write_sample(
         row_sums (list[float]): список значений элементов
         spm: уровень существенности
     """
+    p = pathlib.Path(path)
+    pathlib.Path(p.parent.absolute()).mkdir(parents=True, exist_ok=True)
+
     with open(path, "w") as f:
         csvwriter = csv.writer(f, delimiter=",", quotechar='"')
-        csvwriter.writerow(["mus_is", "row_sum"])
+        csvwriter.writerow(["mus_id", "row_sum"])
         for row_id, row_sum in zip(
-            *row_ids, *row_sums
+            row_ids, row_sums
         ):
             if row_sum >= spm:
                 csvwriter.writerow(

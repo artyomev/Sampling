@@ -1,6 +1,8 @@
 import os
 
 from django.http import FileResponse
+from django.utils.decorators import method_decorator
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework.response import  Response
 from rest_framework import status
 from rest_framework.generics import GenericAPIView
@@ -28,24 +30,24 @@ class ExecuteAnalysis(GenericAPIView):
     parser_classes = (MultiPartParser, FormParser)
     serializer_class = ExecuteAnalysisSerializer
     def get(self, request, *args, **kwargs):
-        try:
-            pk = kwargs.get('pk', 0)
-            obj = Analysis.objects.get(id=pk)
-            analysis_name = obj.analysis_name
-            spm = obj.analysisparameters.spm
-            files = obj.files.all()
-            new_sample_path_save = os.path.join(uploads_storage.location,
-                                    project_files_folder(files.first(), ""),
-                                    "done", analysis_name+".csv")
-            print(new_sample_path_save)
-            process_files(files, spm, new_sample_path_save)
-            response = FileResponse(open(new_sample_path_save, 'rb'))
-            return response
-        except Exception as e:
-            return Response(
-                TypeError(e),
-                status=status.HTTP_400_BAD_REQUEST
-            )
+        # try:
+        pk = kwargs.get('pk', 0)
+        obj = Analysis.objects.get(id=pk)
+        analysis_name = obj.analysis_name
+        spm = obj.analysisparameters.spm
+        files = obj.files.all()
+        new_sample_path_save = os.path.join(uploads_storage.location,
+                                project_files_folder(files.first(), ""),
+                                "done", analysis_name+".csv")
+        print(new_sample_path_save)
+        process_files(files, spm, new_sample_path_save)
+        response = FileResponse(open(new_sample_path_save, 'rb'))
+        return response
+        # except Exception as e:
+        #     return Response(
+        #         repr(e),
+        #         status=status.HTTP_400_BAD_REQUEST
+        #     )
 
     def get_queryset(self):
         pass
