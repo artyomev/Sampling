@@ -26,9 +26,9 @@ def auto_delete_file_on_delete(sender, instance, **kwargs):
     Deletes file from filesystem
     when corresponding `InitialUploaded` object is deleted.
     """
-    if instance.file:
-        if os.path.isfile(instance.file.path):
-            os.remove(instance.file.path)
+    if instance.initial_file:
+        if os.path.isfile(instance.initial_file.path):
+            os.remove(instance.initial_file.path)
 
 @receiver(pre_save, sender=InitialUploadedFile)
 def auto_delete_file_on_change(sender, instance, **kwargs):
