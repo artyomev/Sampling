@@ -13,7 +13,7 @@ from musauth.models import MusUser
 from musauth.serializers import MusUserSerializer
 from projects.models import Project
 from projects.serializers import ProjectsSerializer, ProjectTeamSerializer
-from projects.uils import team_response_schema_dict, team_detailed_response_schema_dict, \
+from projects.utils import team_response_schema_dict, team_detailed_response_schema_dict, \
     userprojects_response_schema_dict
 
 

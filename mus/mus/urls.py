@@ -37,7 +37,7 @@ urlpatterns = [
     path('api/v1/', include(project_router.urls), name = r'projects' ),
     path('api/v1/', include(user_router.urls)),
     path('api/v1/', include(analysis_router.urls)),
-    path('api/v1/upload/', FileUploadAPIView.as_view()),
+    path('api/v1/upload/', FileUploadAPIView.as_view(), name = 'upload'),
     path('api/v1/download/<int:pk>/', SingleDownloadFile.as_view()),
     path('api/v1/execute/<int:pk>/',  ExecuteAnalysis.as_view()),
     # for homework 8

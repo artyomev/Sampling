@@ -24,7 +24,7 @@ class FileUploadAPIView(APIView):
     @swagger_auto_schema(request_body=InitialFileUploadSerializer, responses={201: user_response})
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
-        if serializer.is_valid():
+        if serializer.is_valid(raise_exception=True):
             serializer.save()
 
             return Response(
